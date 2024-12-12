@@ -8,7 +8,7 @@ class Node {
 
 class Tree {
   constructor(array) {
-    this.root = this.processArray(array);
+    this.root = this.buildTree(this.processArray(array));
   }
 
   processArray(input) {
