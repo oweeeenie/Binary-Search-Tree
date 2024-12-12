@@ -39,4 +39,31 @@ class Tree {
 
     return currentNode;
   }
+
+  insert(value) {
+    let current = this.root;
+
+    if (this.root === null) {
+      this.root = new Node(value);
+      return;
+    }
+
+    while (current !== null) {
+      if (value < current.data) {
+        if (current.left === null) {
+          current.left = new Node(value);
+          return; // Exit once the value is inserted
+        }
+        current = current.left; // Move left if value is smaller
+      } else if (value > current.data) {
+        if (current.right === null) {
+          current.right = new Node(value);
+          return; // Exit once the value is inserted
+        }
+        current = current.right;
+      } else {
+        return;
+      }
+    }
+  }
 }
