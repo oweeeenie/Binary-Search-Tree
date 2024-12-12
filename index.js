@@ -7,8 +7,24 @@ class Node {
 }
 
 class Tree {
-  constructor() {
-    this.root = null;
+  constructor(array) {
+    this.root = this.processArray(array);
+  }
+
+  processArray(input) {
+    if (!Array.isArray(input)) {
+      return null;
+    }
+
+    if (input.length === 0) {
+      return null;
+    }
+
+    input.sort();
+    let mySet = new Set(input);
+    let sortedArray = Array.from(mySet);
+
+    return sortedArray;
   }
 
   buildTree(array) {
