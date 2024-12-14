@@ -126,4 +126,18 @@ class Tree {
       }
     }
   }
+
+  // finds the value in the tree. obviously.
+  find(value) {
+    let current = this.root;
+
+    while (current !== null && value !== current.data) {
+      if (value < current.data) {
+        current = current.left;
+      } else if (value > current.data) {
+        current = current.right;
+      }
+    }
+    return current;
+  }
 }
