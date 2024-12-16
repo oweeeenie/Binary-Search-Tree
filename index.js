@@ -147,18 +147,15 @@ class Tree {
       return null;
     }
 
-    let queue = [];
-
-    let current = this.root;
-    queue.push(current);
+    const queue = [this.root];
 
     if (typeof callback !== 'function') {
       throw new Error('A callback function is required');
     }
 
     while (queue.length > 0) {
-      let removedNode = queue.shift();
-      callback(removedNode);
+      const removedNode = queue.shift();
+      callback(removedNode.data);
 
       if (removedNode.left !== null) {
         queue.push(removedNode.left);
@@ -227,7 +224,7 @@ class Tree {
   }
 
   // LEFT, RIGHT, ROOT
-  preOrder(callback) {
+  postOrder(callback) {
     if (this.root === null) {
       return;
     }
@@ -252,4 +249,29 @@ class Tree {
 
     traverse(this.root);
   }
+
+  height(node) {
+    if (node === null) {
+      return -1;
+    }
+
+    if (node.left === null && node.right === null) {
+      return 0;
+    }
+
+    let leftHeight = this.height(node.left);
+    let rightHeight = this.height(node.right);
+
+    let calculatedHeight = Math.max(leftHeight, rightHeight);
+    return calculatedHeight + 1;
+  }
 }
+
+const tree = new Tree([10, 7, 15, 5, 8, 18, 3]);
+
+// Test height for various nodes
+console.log('Height of root node (10):', tree.height(tree.root)); // Expected: 3
+console.log('Height of node (7):', tree.height(tree.root.left)); // Expected: 2
+console.log('Height of node (15):', tree.height(tree.root.right)); // Expected: 2
+console.log('Height of node (3):', tree.height(tree.root.left.left.left)); // Expected: 0
+console.log('Height of null node:', tree.height(null)); // Expected: -1
