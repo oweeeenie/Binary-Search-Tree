@@ -140,4 +140,45 @@ class Tree {
     }
     return current;
   }
+
+  levelOrder(callback) {
+    if (this.root === null) {
+      return null;
+    }
+
+    let queue = [];
+
+    let current = this.root;
+    queue.push(current);
+
+    if (typeof callback !== 'function') {
+      throw new Error('A callback function is required');
+    }
+
+    while (queue.length > 0) {
+      let removedNode = queue.shift();
+      callback(removedNode);
+
+      if (removedNode.left !== null) {
+        queue.push(removedNode.left);
+      }
+      if (removedNode.right !== null) {
+        queue.push(removedNode.right);
+      }
+    }
+  }
 }
+
+const myTree = new Tree();
+
+myTree.insert(10); // Root node
+myTree.insert(7); // Goes to the left of 10
+myTree.insert(30); // Goes to the right of 10
+myTree.insert(5); // Goes to the left of 7
+myTree.insert(2); // Goes to the left of 5
+myTree.insert(12); // Goes to the right of 10
+
+console.log('Testing levelOrder method:');
+myTree.levelOrder((node) => {
+  console.log(node.data);
+});
