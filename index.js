@@ -141,6 +141,7 @@ class Tree {
     return current;
   }
 
+  // goes top to bottom, left to right.
   levelOrder(callback) {
     if (this.root === null) {
       return null;
@@ -167,18 +168,88 @@ class Tree {
       }
     }
   }
+
+  // LEFT, ROOT, RIGHT
+  inOrder(callback) {
+    if (this.root === null) {
+      return;
+    }
+
+    if (typeof callback !== 'function') {
+      throw new Error('A callback function is required');
+    }
+
+    function traverse(node) {
+      if (node === null) {
+        return;
+      }
+
+      // left subtree
+      traverse(node.left);
+
+      // calling callback on current node
+      callback(node);
+
+      // right subtree
+      traverse(node.right);
+    }
+
+    // start the recursion (no need to define current = this.root)
+    traverse(this.root);
+  }
+
+  // ROOT, LEFT, RIGHT
+  preOrder(callback) {
+    if (this.root === null) {
+      return;
+    }
+
+    if (typeof callback !== 'function') {
+      throw new Error('A callback function is required');
+    }
+
+    function traverse(node) {
+      if (node === null) {
+        return;
+      }
+
+      // root
+      callback(node);
+
+      // left
+      traverse(node.left);
+
+      // right
+      traverse(node.right);
+    }
+
+    traverse(this.root);
+  }
+
+  // LEFT, RIGHT, ROOT
+  preOrder(callback) {
+    if (this.root === null) {
+      return;
+    }
+
+    if (typeof callback !== 'function') {
+      throw new Error('A callback function is required');
+    }
+
+    function traverse(node) {
+      if (node === null) {
+        return;
+      }
+      // left
+      traverse(node.left);
+
+      // right
+      traverse(node.right);
+
+      // root
+      callback(node);
+    }
+
+    traverse(this.root);
+  }
 }
-
-const myTree = new Tree();
-
-myTree.insert(10); // Root node
-myTree.insert(7); // Goes to the left of 10
-myTree.insert(30); // Goes to the right of 10
-myTree.insert(5); // Goes to the left of 7
-myTree.insert(2); // Goes to the left of 5
-myTree.insert(12); // Goes to the right of 10
-
-console.log('Testing levelOrder method:');
-myTree.levelOrder((node) => {
-  console.log(node.data);
-});
