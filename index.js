@@ -68,7 +68,6 @@ class Tree {
     let current = this.root;
     let parent = null;
 
-    // base case: no data, nothing to delete
     if (this.root === null) {
       console.log('Tree is empty.');
       return;
@@ -82,7 +81,7 @@ class Tree {
       } else if (value > current.data) {
         current = current.right;
       } else {
-        // leaf node (no children)
+        // leaf node
         if (current.left === null && current.right === null) {
           if (parent === null) {
             this.root = null;
@@ -127,7 +126,6 @@ class Tree {
     }
   }
 
-  // finds the value in the tree. obviously.
   find(value) {
     let current = this.root;
 
@@ -141,7 +139,6 @@ class Tree {
     return current;
   }
 
-  // goes top to bottom, left to right.
   levelOrder(callback) {
     if (this.root === null) {
       return null;
@@ -166,7 +163,6 @@ class Tree {
     }
   }
 
-  // LEFT, ROOT, RIGHT
   inOrder(callback) {
     if (this.root === null) {
       return;
@@ -180,22 +176,13 @@ class Tree {
       if (node === null) {
         return;
       }
-
-      // left subtree
       traverse(node.left);
-
-      // calling callback on current node
       callback(node);
-
-      // right subtree
       traverse(node.right);
     }
-
-    // start the recursion (no need to define current = this.root)
     traverse(this.root);
   }
 
-  // ROOT, LEFT, RIGHT
   preOrder(callback) {
     if (this.root === null) {
       return;
@@ -209,21 +196,13 @@ class Tree {
       if (node === null) {
         return;
       }
-
-      // root
       callback(node);
-
-      // left
       traverse(node.left);
-
-      // right
       traverse(node.right);
     }
-
     traverse(this.root);
   }
 
-  // LEFT, RIGHT, ROOT
   postOrder(callback) {
     if (this.root === null) {
       return;
@@ -237,16 +216,10 @@ class Tree {
       if (node === null) {
         return;
       }
-      // left
       traverse(node.left);
-
-      // right
       traverse(node.right);
-
-      // root
       callback(node);
     }
-
     traverse(this.root);
   }
 
@@ -255,15 +228,10 @@ class Tree {
       return -1;
     }
 
-    if (node.left === null && node.right === null) {
-      return 0;
-    }
-
     let leftHeight = this.height(node.left);
     let rightHeight = this.height(node.right);
 
-    let calculatedHeight = Math.max(leftHeight, rightHeight);
-    return calculatedHeight + 1;
+    return Math.max(leftHeight, rightHeight) + 1;
   }
 
   depth(node) {
@@ -272,41 +240,29 @@ class Tree {
     }
 
     function depthHelper(currentNode, currentDepth) {
-      currentDepth++;
-
       if (currentNode === null) {
         return -1;
       }
       if (currentNode === node) {
         return currentDepth;
       }
-      let leftDepth = depthHelper(currentNode.left, currentDepth);
-      let rightDepth = depthHelper(currentNode.right, currentDepth);
+      let leftDepth = depthHelper(currentNode.left, currentDepth + 1);
+      if (leftDepth !== -1) return leftDepth;
 
-      if (leftDepth !== -1) {
-        return leftDepth;
-      }
-      if (rightDepth !== -1) {
-        return rightDepth;
-      }
+      let rightDepth = depthHelper(currentNode.right, currentDepth + 1);
+      return rightDepth;
     }
     return depthHelper(this.root, 0);
   }
 }
 
+// Test cases
 const tree = new Tree([10, 5, 15, 3, 7, 12, 18]);
 
-// Test case: Depth of the root node
-console.log(tree.depth(tree.root)); // Expected output: 0
-
-// Test case: Depth of node with value 7
+console.log(tree.depth(tree.root)); // 0
 const node7 = tree.find(7);
-console.log(tree.depth(node7)); // Expected output: 2 (since 7 is at depth 2)
-
-// Test case: Depth of node with value 3
+console.log(tree.depth(node7)); // 2
 const node3 = tree.find(3);
-console.log(tree.depth(node3)); // Expected output: 1 (since 3 is at depth 1)
-
-// Test case: Depth of a node that doesn't exist (20)
+console.log(tree.depth(node3)); // 2 (balanced tree)
 const node20 = tree.find(20);
-console.log(tree.depth(node20)); // Expected output: -1 (since 20 doesn't exist)
+console.log(tree.depth(node20)); // -1
