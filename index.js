@@ -265,13 +265,48 @@ class Tree {
     let calculatedHeight = Math.max(leftHeight, rightHeight);
     return calculatedHeight + 1;
   }
+
+  depth(node) {
+    if (node === this.root) {
+      return 0;
+    }
+
+    function depthHelper(currentNode, currentDepth) {
+      currentDepth++;
+
+      if (currentNode === null) {
+        return -1;
+      }
+      if (currentNode === node) {
+        return currentDepth;
+      }
+      let leftDepth = depthHelper(currentNode.left, currentDepth);
+      let rightDepth = depthHelper(currentNode.right, currentDepth);
+
+      if (leftDepth !== -1) {
+        return leftDepth;
+      }
+      if (rightDepth !== -1) {
+        return rightDepth;
+      }
+    }
+    return depthHelper(this.root, 0);
+  }
 }
 
-const tree = new Tree([10, 7, 15, 5, 8, 18, 3]);
+const tree = new Tree([10, 5, 15, 3, 7, 12, 18]);
 
-// Test height for various nodes
-console.log('Height of root node (10):', tree.height(tree.root)); // Expected: 3
-console.log('Height of node (7):', tree.height(tree.root.left)); // Expected: 2
-console.log('Height of node (15):', tree.height(tree.root.right)); // Expected: 2
-console.log('Height of node (3):', tree.height(tree.root.left.left.left)); // Expected: 0
-console.log('Height of null node:', tree.height(null)); // Expected: -1
+// Test case: Depth of the root node
+console.log(tree.depth(tree.root)); // Expected output: 0
+
+// Test case: Depth of node with value 7
+const node7 = tree.find(7);
+console.log(tree.depth(node7)); // Expected output: 2 (since 7 is at depth 2)
+
+// Test case: Depth of node with value 3
+const node3 = tree.find(3);
+console.log(tree.depth(node3)); // Expected output: 1 (since 3 is at depth 1)
+
+// Test case: Depth of a node that doesn't exist (20)
+const node20 = tree.find(20);
+console.log(tree.depth(node20)); // Expected output: -1 (since 20 doesn't exist)
