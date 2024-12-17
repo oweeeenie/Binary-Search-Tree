@@ -255,14 +255,3 @@ class Tree {
     return depthHelper(this.root, 0);
   }
 }
-
-// Test cases
-const tree = new Tree([10, 5, 15, 3, 7, 12, 18]);
-
-console.log(tree.depth(tree.root)); // 0
-const node7 = tree.find(7);
-console.log(tree.depth(node7)); // 2
-const node3 = tree.find(3);
-console.log(tree.depth(node3)); // 2 (balanced tree)
-const node20 = tree.find(20);
-console.log(tree.depth(node20)); // -1
